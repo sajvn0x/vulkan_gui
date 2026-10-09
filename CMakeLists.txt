@@ -20,6 +20,7 @@ include_directories(${X11_INCLUDE_DIR})
 
 set(SOURCES
 	src/main.cc
+	src/app.cc
 	src/core/window_management.cc
 	src/platform/linux/window_management_x11.cc
 )
@@ -29,14 +30,29 @@ add_compile_options(-Wall)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# platform detection
+if(UNIX)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC PLATFORM_LINUX)
+elseif(WIN32)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC PLATFORM_WINDOWS)
+else()
+    message(FATAL_ERROR "Unsupported operating system")
+endif()
+
 target_include_directories(${PROJECT_NAME} PRIVATE
     src
 )
 
+if (UNIX)
+	target_link_libraries(${PROJECT_NAME} PRIVATE
+		X11::X11
+		X11::Xinerama
+		X11::Xrandr
+	)
+elseif(WIN32)
+endif()
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Vulkan::Headers
-    X11::X11
-    X11::Xinerama
-    X11::Xrandr
 )
 
