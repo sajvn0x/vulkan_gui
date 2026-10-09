@@ -4,7 +4,14 @@
 
 #include <map>
 
+#if defined(VULKAN_ENABLED)
+#include <vulkan/vulkan.h>
+#include <vulkan/vulkan_xlib.h>
+#endif
+
 #include "core/window_management.hh"
+
+enum { PRIMARY_WINDOW = 0 };
 
 class WindowManagementX11 : public WindowManagement {
     ::Display* display = nullptr;
@@ -46,6 +53,12 @@ public:
     void process_events() override;
 
     int get_screen_count() const override;
+
+#if defined(VULKAN_ENABLED)
+public:
+    std::vector<const char*> vulkan_get_platform_extensions() const override;
+    VkResult vulkan_get_surface(VkInstance p_instance, VkSurfaceKHR* r_surface) const override;
+#endif
 
     WindowManagementX11();
     ~WindowManagementX11() override;

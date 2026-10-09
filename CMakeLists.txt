@@ -16,6 +16,7 @@ if(NOT TARGET Vulkan::Headers)
 endif()
 
 find_package(X11 REQUIRED COMPONENTS Xinerama Xrandr Xi)
+find_package(Vulkan REQUIRED)
 include_directories(${X11_INCLUDE_DIR})
 
 set(SOURCES
@@ -29,6 +30,8 @@ add_compile_options(-g)
 add_compile_options(-Wall)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC VULKAN_ENABLED)
 
 # platform detection
 if(UNIX)
@@ -54,5 +57,6 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Vulkan::Headers
+	Vulkan::Vulkan
 )
 

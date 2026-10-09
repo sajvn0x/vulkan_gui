@@ -93,6 +93,31 @@ WindowId WindowManagementX11::_create_window(std::string p_title, int p_width, i
 
 void WindowManagementX11::_show_window(WindowId p_wid) { XMapWindow(display, windows[p_wid].window); }
 
+std::vector<const char*> WindowManagementX11::vulkan_get_platform_extensions() const {
+    std::vector<const char*> extensions;
+    extensions.push_back("VK_KHR_xlib_surface");
+    return extensions;
+}
+
+VkResult WindowManagementX11::vulkan_get_surface(VkInstance p_instance, VkSurfaceKHR* r_surface) const {
+    VkSurfaceKHR surface = VK_NULL_HANDLE;
+
+    Window window;
+    for (const auto& [key, value] : windows) {
+        if (key == PRIMARY_WINDOW) {
+            window = value.window;
+        }
+    }
+
+    VkXlibSurfaceCreateInfoKHR create_info = {.sType = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR,
+                                              .pNext = nullptr,
+                                              .flags = 0,
+                                              .dpy = display,
+                                              .window = window};
+
+    return vkCreateXlibSurfaceKHR(p_instance, &create_info, nullptr, &surface);
+}
+
 WindowManagementX11::WindowManagementX11() {
     display = XOpenDisplay(nullptr);
     if (!display) {
