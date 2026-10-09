@@ -95,7 +95,7 @@ void WindowManagementX11::_show_window(WindowId p_wid) { XMapWindow(display, win
 
 std::vector<const char*> WindowManagementX11::vulkan_get_platform_extensions() const {
     std::vector<const char*> extensions;
-    extensions.push_back("VK_KHR_xlib_surface");
+    extensions.push_back(VK_KHR_XLIB_SURFACE_EXTENSION_NAME);
     return extensions;
 }
 

@@ -24,6 +24,9 @@ set(SOURCES
 	src/app.cc
 	src/core/window_management.cc
 	src/platform/linux/window_management_x11.cc
+
+	# vulkan
+	src/vk/renderer.cc
 )
 
 add_compile_options(-g)
