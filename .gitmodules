@@ -1,0 +1,3 @@
+[submodule "library/vulkan-headers"]
+	path = library/vulkan-headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
