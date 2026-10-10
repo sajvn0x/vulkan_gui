@@ -27,6 +27,9 @@ set(SOURCES
 
 	# vulkan
 	src/vk/renderer.cc
+	src/vk/vk_device.cc
+	src/vk/vk_swapchain.cc
+	src/vk/vk_buffer.cc
 )
 
 add_compile_options(-g)
